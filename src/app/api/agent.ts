@@ -3,6 +3,7 @@ import { IActivity } from './../models/activity';
 import { history } from './../../index';
 import { toast } from 'react-toastify';
 import { IUser, IUserFormValues } from './../models/user';
+import { IProfile } from './../models/profile';
 
 axios.defaults.baseURL = 'https://localhost:5001/api';
 axios.interceptors.request.use(
@@ -74,8 +75,8 @@ const Activities = {
   update: (activity: IActivity) =>
     requests.put(`/activities/${activity.id}`, activity),
   delete: (id: string) => requests.delete(`/activities/${id}`),
-	attend: (id: string) => requests.post(`/activities/${id}/attend`, {}),
-	unattend: (id:string) => requests.delete(`/activities/${id}/attend`)
+  attend: (id: string) => requests.post(`/activities/${id}/attend`, {}),
+  unattend: (id: string) => requests.delete(`/activities/${id}/attend`)
 };
 
 const User = {
@@ -86,4 +87,9 @@ const User = {
     requests.post(`/user/register`, user)
 };
 
-export default { Activities, User };
+const Profiles = {
+  get: (username: string): Promise<IProfile> =>
+    requests.get(`/profiles/${username}`)
+};
+
+export default { Activities, User, Profiles };

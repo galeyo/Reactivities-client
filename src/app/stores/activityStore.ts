@@ -32,16 +32,13 @@ export default class ActivityStore {
       (a, b) => a.date.getTime() - b.date.getTime()
     );
     return Object.entries(
-      sortedActivities.reduce(
-        (activities, activity) => {
-          const date = activity.date.toISOString().split('T')[0];
-          activities[date] = activities[date]
-            ? [...activities[date], activity]
-            : [activity];
-          return activities;
-        },
-        {} as { [key: string]: IActivity[] }
-      )
+      sortedActivities.reduce((activities, activity) => {
+        const date = activity.date.toISOString().split('T')[0];
+        activities[date] = activities[date]
+          ? [...activities[date], activity]
+          : [activity];
+        return activities;
+      }, {} as { [key: string]: IActivity[] })
     );
   }
 
@@ -100,13 +97,13 @@ export default class ActivityStore {
   @action createActivity = async (activity: IActivity) => {
     this.submitting = true;
     try {
-			await agent.Activities.create(activity);
-			const attendee = createAttendee(this.rootStore.userStore.user!);
-			attendee.isHost = true;
-			let attendees = [];
-			attendees.push(attendee);
-			activity.attendees = attendees;
-			activity.isHost = true;
+      await agent.Activities.create(activity);
+      const attendee = createAttendee(this.rootStore.userStore.user!);
+      attendee.isHost = true;
+      let attendees = [];
+      attendees.push(attendee);
+      activity.attendees = attendees;
+      activity.isHost = true;
       runInAction('create activity', () => {
         this.activityRegistry.set(activity.id, activity);
       });

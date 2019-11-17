@@ -7,9 +7,9 @@ interface IProps
     FormFieldProps {}
 const DateInput: React.FC<IProps> = ({
   input,
-	width,
-	date=false,
-	time=false,
+  width,
+  date = false,
+  time = false,
   placeholder,
   meta: { touched, error },
   ...rest
@@ -18,11 +18,11 @@ const DateInput: React.FC<IProps> = ({
     <Form.Field error={touched && !!error} width={width}>
       <DateTimePicker
         placeholder={placeholder}
-				value={input.value || undefined}
-				onBlur={input.onBlur}
-				onKeyDown={(e) => e.preventDefault()}
-				date={date}
-				time={time}
+        value={input.value || undefined}
+        onBlur={input.onBlur}
+        onKeyDown={e => e.preventDefault()}
+        date={date}
+        time={time}
         onChange={input.onChange}
         {...rest}
       />

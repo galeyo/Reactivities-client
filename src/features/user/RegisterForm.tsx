@@ -11,7 +11,7 @@ const validate = combineValidators({
   username: isRequired('username'),
   displayName: isRequired('display name'),
   email: isRequired('email'),
-  password: isRequired('password'),
+  password: isRequired('password')
 });
 
 const RegisterForm = () => {
@@ -41,7 +41,11 @@ const RegisterForm = () => {
             textAlign='center'
           />
           <Field name='username' component={TextInput} placeholder='Username' />
-          <Field name='displayName' component={TextInput} placeholder='Display Name' />
+          <Field
+            name='displayName'
+            component={TextInput}
+            placeholder='Display Name'
+          />
           <Field name='email' component={TextInput} placeholder='Email' />
           <Field
             name='password'
@@ -50,9 +54,7 @@ const RegisterForm = () => {
             type='password'
           />
           {submitError && !dirtySinceLastSubmit && (
-            <ErrorMessage
-              error={submitError}
-            />
+            <ErrorMessage error={submitError} />
           )}
           <Button
             disabled={(invalid && !dirtySinceLastSubmit) || pristine}

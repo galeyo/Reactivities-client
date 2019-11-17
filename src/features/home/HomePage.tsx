@@ -7,8 +7,8 @@ import RegisterForm from './../user/RegisterForm';
 
 const HomePage = () => {
   const rootStore = useContext(RootStoreContext);
-	const { isLoggedIn, user } = rootStore.userStore;
-	const {openModal} = rootStore.modalStore;
+  const { isLoggedIn, user } = rootStore.userStore;
+  const { openModal } = rootStore.modalStore;
   return (
     <Segment inverted textAlign='center' vertical className='masthead'>
       <Container text>
@@ -35,10 +35,16 @@ const HomePage = () => {
         ) : (
           <Fragment>
             <Header as='h2' inverted content='Welcome to Reactivities' />
-            <Button onClick={() => openModal(<LoginForm />)} size='huge' inverted>
+            <Button
+              onClick={() => openModal(<LoginForm />)}
+              size='huge'
+              inverted>
               Login
             </Button>
-            <Button onClick={() => openModal(<RegisterForm />)} size='huge' inverted>
+            <Button
+              onClick={() => openModal(<RegisterForm />)}
+              size='huge'
+              inverted>
               Register
             </Button>
           </Fragment>

@@ -5,10 +5,10 @@ export interface IActivity {
   category: string;
   date: Date;
   city: string;
-	venue: string;
-	isGoing: boolean;
-	isHost: boolean;
-	attendees: IAttendee[]
+  venue: string;
+  isGoing: boolean;
+  isHost: boolean;
+  attendees: IAttendee[];
 }
 
 export interface IActivityFormValues extends Partial<IActivity> {
@@ -23,20 +23,20 @@ export class ActivityFormValues implements IActivityFormValues {
   date?: Date = undefined;
   time?: Date = undefined;
   city: string = '';
-	venue: string = '';
-	
-	constructor(init?: IActivityFormValues) {
-		var time;
-		if(init && init.date) {
-			time = init.date;
-		}
-		Object.assign(this, {...init, time});
-	}
+  venue: string = '';
+
+  constructor(init?: IActivityFormValues) {
+    var time;
+    if (init && init.date) {
+      time = init.date;
+    }
+    Object.assign(this, { ...init, time });
+  }
 }
 
 export interface IAttendee {
-	username: string;
-	displayName: string;
-	image: string;
-	isHost: boolean;
+  username: string;
+  displayName: string;
+  image: string;
+  isHost: boolean;
 }
