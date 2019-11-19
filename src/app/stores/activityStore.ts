@@ -7,6 +7,11 @@ import { toast } from 'react-toastify';
 import { RootStore } from './rootStore';
 import { setActivityProps } from '../common/util/util';
 import { createAttendee } from './../common/util/util';
+import {
+  HubConnection,
+  HubConnectionBuilder,
+  LogLevel
+} from '@microsoft/signalr';
 
 export default class ActivityStore {
   rootStore: RootStore;
@@ -20,6 +25,52 @@ export default class ActivityStore {
   @observable submitting = false;
   @observable target = '';
   @observable loading = false;
+  @observable.ref hubConnection: HubConnection | null = null;
+
+  @action createHubConnection = (activityId: string) => {
+    this.hubConnection = new HubConnectionBuilder()
+      .withUrl('https://localhost:5001/chat', {
+        accessTokenFactory: () => this.rootStore.commonStore.token!
+      })
+      .configureLogging(LogLevel.Information)
+      .build();
+    this.hubConnection
+      .start()
+      .then(() => {
+				console.log(this.hubConnection!.state);
+				console.log('Attempting to join group');
+				this.hubConnection!.invoke('AddToGroup', activityId);
+			})
+      .catch(error => console.log('Error establishing connection: ', error));
+
+    this.hubConnection.on('ReceiveComment', comment => {
+      runInAction(() => {
+        this.activity!.comments.push(comment);
+      });
+    });
+
+    this.hubConnection.on('Send', message => {
+      toast.info(message);
+    });
+  };
+
+  @action addComment = async (values: any) => {
+    values.activityId = this.activity!.id;
+    try {
+      await this.hubConnection!.invoke('SendComment', values);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  @action stopHubConnection = () => {
+    this.hubConnection!.invoke('RemoveFromGroup', this.activity!.id)
+      .then(() => {
+        this.hubConnection!.stop();
+      })
+      .then(() => console.log('Connection stopped!'))
+      .catch(err => console.log(err));
+  };
 
   @computed get activitiesByDate() {
     return this.groupActivitiesByDate(
@@ -98,13 +149,14 @@ export default class ActivityStore {
     this.submitting = true;
     try {
       await agent.Activities.create(activity);
-      const attendee = createAttendee(this.rootStore.userStore.user!);
-      attendee.isHost = true;
-      let attendees = [];
-      attendees.push(attendee);
-      activity.attendees = attendees;
-      activity.isHost = true;
       runInAction('create activity', () => {
+        const attendee = createAttendee(this.rootStore.userStore.user!);
+        attendee.isHost = true;
+        let attendees = [];
+        attendees.push(attendee);
+        activity.comments = [];
+        activity.attendees = attendees;
+        activity.isHost = true;
         this.activityRegistry.set(activity.id, activity);
       });
       history.push(`/activities/${activity.id}`);
