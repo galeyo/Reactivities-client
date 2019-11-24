@@ -21,7 +21,7 @@ export default class ActivityStore {
 
   @observable activityRegistry = new Map();
   @observable activity: IActivity | null = null;
-  @observable loadingInitial: boolean = false;
+  @observable loadingInitial: boolean = true;
   @observable submitting = false;
   @observable target = '';
   @observable loading = false;
@@ -37,10 +37,12 @@ export default class ActivityStore {
     this.hubConnection
       .start()
       .then(() => {
-				console.log(this.hubConnection!.state);
-				console.log('Attempting to join group');
-				this.hubConnection!.invoke('AddToGroup', activityId);
-			})
+        console.log(this.hubConnection!.state);
+      })
+      .then(() => {
+        console.log('Attempting to join group');
+        this.hubConnection!.invoke('AddToGroup', activityId);
+      })
       .catch(error => console.log('Error establishing connection: ', error));
 
     this.hubConnection.on('ReceiveComment', comment => {
@@ -67,6 +69,7 @@ export default class ActivityStore {
     this.hubConnection!.invoke('RemoveFromGroup', this.activity!.id)
       .then(() => {
         this.hubConnection!.stop();
+        this.clearActivity();
       })
       .then(() => console.log('Connection stopped!'))
       .catch(err => console.log(err));
@@ -113,12 +116,13 @@ export default class ActivityStore {
   };
 
   @action loadActivity = async (id: string) => {
+    this.loadingInitial = true;
     let activity = this.getActivity(id);
     if (activity) {
       this.activity = activity;
+      this.loadingInitial = false;
       return activity;
     } else {
-      this.loadingInitial = true;
       try {
         activity = await agent.Activities.details(id);
         runInAction('getting activity', () => {

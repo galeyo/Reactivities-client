@@ -43,8 +43,8 @@ const App: React.FC<RouteComponentProps> = ({ location }) => {
             <NavBar />
             <Container style={{ marginTop: '7em' }}>
               <Switch>
-                <Route exact path='/activities' component={ActivityDashboard} />
                 <Route path='/activities/:id' component={ActivityDetails} />
+                <Route exact path='/activities' component={ActivityDashboard} />
                 <Route
                   key={location.key}
                   path={['/createActivity', '/manage/:id']}

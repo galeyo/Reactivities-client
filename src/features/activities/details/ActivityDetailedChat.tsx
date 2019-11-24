@@ -46,7 +46,7 @@ const ActivityDetailedChat = () => {
                   <Comment.Metadata>
                     <div>{formatDistance(comment.createdAt, new Date())}</div>
                   </Comment.Metadata>
-                  <Comment.Text>{comment.body}</Comment.Text> 
+                  <Comment.Text>{comment.body}</Comment.Text>
                 </Comment.Content>
               </Comment>
             ))}

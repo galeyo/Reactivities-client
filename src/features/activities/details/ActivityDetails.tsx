@@ -22,6 +22,9 @@ const ActivityDetails: React.FC<RouteComponentProps<DetailParams>> = ({
 
   useEffect(() => {
     loadActivity(match.params.id);
+    return () => {
+      console.log('Unmount activity details');
+    };
   }, [loadActivity, match.params.id]);
 
   if (loadingInitial) return <LoadingComponent content='Loading activity...' />;
