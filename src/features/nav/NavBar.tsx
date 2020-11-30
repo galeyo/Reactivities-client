@@ -3,7 +3,6 @@ import { Menu, Container, Button, Dropdown, Image } from 'semantic-ui-react';
 import { observer } from 'mobx-react-lite';
 import { NavLink, Link } from 'react-router-dom';
 import { RootStoreContext } from '../../app/stores/rootStore';
-
 const NavBar: React.FC = () => {
   const rootStore = useContext(RootStoreContext);
   const { user, logout } = rootStore.userStore;
@@ -52,4 +51,4 @@ const NavBar: React.FC = () => {
   );
 };
 
-export default observer(NavBar);
+export default (NavBar);

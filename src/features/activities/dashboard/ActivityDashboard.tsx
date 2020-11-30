@@ -21,10 +21,11 @@ const ActivityDashboard: React.FC = () => {
   const handleGetNext = () => {
     setLoadingNext(true);
     setPage(page + 1);
-    loadActivities().then(() => setLoadingNext(false));
+	loadActivities().then(() => setLoadingNext(false));
+	window.scrollTo(0, 0);
   };
   useEffect(() => {
-    loadActivities();
+	loadActivities();
   }, [loadActivities]);
 
   return (

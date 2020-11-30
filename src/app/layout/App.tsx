@@ -15,7 +15,7 @@ import { useEffect } from 'react';
 import LoadingComponent from './LoadingComponent';
 import ModalContainer from './../common/modals/ModalContainer';
 import ProfilePage from './../../features/profiles/ProfilePage';
-import PrivateRoute from '../layout/PrivateRoute';
+import PrivateRoute from './PrivateRoute';
 
 const App: React.FC<RouteComponentProps> = ({ location }) => {
   const rootStore = useContext(RootStoreContext);

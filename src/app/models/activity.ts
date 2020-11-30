@@ -55,3 +55,8 @@ export interface IAttendee {
   isHost: boolean;
   following?: boolean;
 }
+
+export interface ISelectValues {
+	label: string;
+	value: number;
+} 
